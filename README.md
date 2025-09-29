@@ -1,0 +1,1 @@
+[![Build Status](https://dev.azure.com/lodrickmAZ400/AcmeCorp/_apis/build/status%2FDarkspire-Tech.WebappDemo?branchName=master)](https://dev.azure.com/lodrickmAZ400/AcmeCorp/_build/latest?definitionId=2&branchName=master)
