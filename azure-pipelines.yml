@@ -7,23 +7,22 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  name: 'buildagent'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  dotnetSdkVersion: '8.0.x'   # Adjust if using 6.0, 7.0, etc.
 
 steps:
-- task: NuGetToolInstaller@1
+  - task: UseDotNet@2
+    displayName: 'Install .NET SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '$(dotnetSdkVersion)'
+      installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+  - script: dotnet restore
+    displayName: 'Restore dependencies'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - script: dotnet build --configuration $(buildConfiguration) --no-restore
+    displayName: 'Build solution'
