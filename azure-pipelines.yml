@@ -16,6 +16,10 @@ variables:
 
 steps:
 
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '9.x'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
