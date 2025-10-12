@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  name: 'buildagent'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
@@ -26,3 +26,12 @@ steps:
 
   - script: dotnet build --configuration $(buildConfiguration) --no-restore
     displayName: 'Build solution'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+      modifyOutputPath: false
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath:  $(Pipeline.Workspace)
+      artifactName: 'webapp-artifact' 
