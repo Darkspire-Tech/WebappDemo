@@ -26,3 +26,8 @@ steps:
 
   - script: dotnet build --configuration $(buildConfiguration) --no-restore
     displayName: 'Build solution'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+      modifyOutputPath: false
